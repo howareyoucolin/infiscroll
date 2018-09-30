@@ -10,12 +10,15 @@ import $ from 'jquery';
 **/
 class syncAppendHandler {
 
+
 	constructor(){
 		this.locked = false;
 	}
 
+	
 	appendContent(config = {},callback){
 		
+		//If it is locked, block any other function calls 
 		if(this.locked) return;
 		this.locked = true;
 		
@@ -27,14 +30,16 @@ class syncAppendHandler {
 		let element = config.element;
 		let url = config.url;
 
-		$.get(url, function(data){
+		//Request a new content by ajax
+		$.get(url, (data) => {
 			element.append($(data));
+			callback();
+			this.locked = false;
 		});
 		
-		callback();
-		this.locked = false;
 	}
 
+	
 }
 
 

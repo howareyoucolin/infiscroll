@@ -6,8 +6,10 @@ body{
 }
 h1{
 	text-align:center;
-	font-size:50px;
-	margin-bottom:25px;
+	font-size:46px;
+	line-height:140px;
+	padding:0;
+	margin:0;
 }
 h2{
 	font-size:32px;
@@ -25,11 +27,13 @@ hr{
 .banner{
 	text-align:center;
 	width:100%;
-	height:420px;
-	line-height:420px;
 	background:#373737;
-	color:#FFF;
+	padding:1px 0 50px 0;
 	margin-bottom:25px;
+}
+.banner p{
+	color:#FFF;
+	line-height:50px;
 }
 .container{
 	margin:25px auto;

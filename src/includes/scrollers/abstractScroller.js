@@ -58,9 +58,13 @@ class abstractScroller{
 	}
 	
 	subscribe(subId,funcName){
-		if(!('key' in Protected.subscribers)){
+		if(!(subId in Protected.subscribers)){
 			Protected.subscribers[subId] = funcName;
 		}
+	}
+	
+	unsubscribe(subId){
+		delete Protected.subscribers[subId]; 
 	}
 
 	notifySubscribers(){

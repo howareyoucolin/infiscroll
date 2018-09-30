@@ -16,7 +16,7 @@ const Protected = {};
 * Class some descriptions.
 *
 **/
-class jScroller extends abstractScroller{
+class hybridScroller extends abstractScroller{
 	
 	onScrollListener(){
 		$(window).on('scroll',() => {
@@ -25,14 +25,22 @@ class jScroller extends abstractScroller{
 		$('body').on({'touchmove': () => { 
 			this.setY($(window).scrollTop());
 		}});
+		let loop = () => {
+			this.setY($(window).scrollTop());
+			//Force to notify subscribers every 2 secs
+			this.notifySubscribers();
+			Protected.loopId = setTimeout(loop,2000);
+		}
+		Protected.loopId = setTimeout(loop,2000);
 	}
 	
 	offScrollListener(){
 		$(window).off('scroll');
 		$('body').off('touchmove');
+		clearTimeout(Protected.loopId);
 	}
 	
 }
 
 
-export default jScroller;
+export default hybridScroller;

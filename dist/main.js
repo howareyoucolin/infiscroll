@@ -153,15 +153,39 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jque
 
 /***/ }),
 
-/***/ "./src/includes/jScroller.js":
-/*!***********************************!*\
-  !*** ./src/includes/jScroller.js ***!
-  \***********************************/
+/***/ "./src/includes/hybridScroller.js":
+/*!****************************************!*\
+  !*** ./src/includes/hybridScroller.js ***!
+  \****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _abstractScroller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./abstractScroller */ \"./src/includes/abstractScroller.js\");\n\n\n/**\r\n*\r\n* Since ES6 does not support protected properties,\r\n* map and store all the protected properties in an private object.\r\n*\r\n**/\n\nconst Protected = {};\n/**\r\n*\r\n* Class some descriptions.\r\n*\r\n**/\n\nclass jScroller extends _abstractScroller__WEBPACK_IMPORTED_MODULE_1__[\"default\"] {\n  onScrollListener() {\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('scroll', () => {\n      this.setY(jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scrollTop());\n    });\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').on({\n      'touchmove': () => {\n        this.setY(jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scrollTop());\n      }\n    });\n  }\n\n  offScrollListener() {\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).off('scroll');\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').off('touchmove');\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (jScroller);\n\n//# sourceURL=webpack:///./src/includes/jScroller.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _abstractScroller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./abstractScroller */ \"./src/includes/abstractScroller.js\");\n\n\n/**\r\n*\r\n* Since ES6 does not support protected properties,\r\n* map and store all the protected properties in an private object.\r\n*\r\n**/\n\nconst Protected = {};\n/**\r\n*\r\n* Class some descriptions.\r\n*\r\n**/\n\nclass hybridScroller extends _abstractScroller__WEBPACK_IMPORTED_MODULE_1__[\"default\"] {\n  onScrollListener() {\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).on('scroll', () => {\n      this.setY(jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scrollTop());\n    });\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').on({\n      'touchmove': () => {\n        this.setY(jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scrollTop());\n      }\n    });\n\n    let loop = () => {\n      this.setY(jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scrollTop()); //Force to notify subscribers every 2 secs\n\n      this.notifySubscribers();\n      Protected.loopId = setTimeout(loop, 2000);\n    };\n\n    Protected.loopId = setTimeout(loop, 2000);\n  }\n\n  offScrollListener() {\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).off('scroll');\n    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').off('touchmove');\n    clearTimeout(Protected.loopId);\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (hybridScroller);\n\n//# sourceURL=webpack:///./src/includes/hybridScroller.js?");
+
+/***/ }),
+
+/***/ "./src/includes/scrollerAdapter.js":
+/*!*****************************************!*\
+  !*** ./src/includes/scrollerAdapter.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _hybridScroller__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./hybridScroller */ \"./src/includes/hybridScroller.js\");\n\nconst scroller = _hybridScroller__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getInstance();\nscroller.init();\n/* harmony default export */ __webpack_exports__[\"default\"] = (scroller);\n\n//# sourceURL=webpack:///./src/includes/scrollerAdapter.js?");
+
+/***/ }),
+
+/***/ "./src/includes/syncAppendHandler.js":
+/*!*******************************************!*\
+  !*** ./src/includes/syncAppendHandler.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/**\r\n*\r\n* jSyncAppendHandler handles appending a child element to a specific parent element one at a time syncroizely,\r\n* while one is in the process of appending, the handler locks itself to refuse to take another appending task,\r\n* when it finishes the appending, it reopens for new appending procedure\r\n*\r\n**/\nclass jSyncAppendHandler {\n  constructor() {\n    this.locked = false;\n  }\n\n  appendContent(element, url, wrap = 'body') {\n    if (this.locked) return;\n    this.locked = true;\n    console.log('call appendByUrl', this.locked);\n    this.locked = false;\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (jSyncAppendHandler);\n\n//# sourceURL=webpack:///./src/includes/syncAppendHandler.js?");
 
 /***/ }),
 
@@ -173,7 +197,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var jque
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _includes_jScroller__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./includes/jScroller */ \"./src/includes/jScroller.js\");\n\n\nlet scroller = _includes_jScroller__WEBPACK_IMPORTED_MODULE_1__[\"default\"].getInstance();\nscroller.init();\nscroller.offScrollListener();\nscroller.subscribe('Home-Infinite-Scroll', function () {\n  console.log(scroller.getY());\n});\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\n/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _includes_scrollerAdapter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./includes/scrollerAdapter */ \"./src/includes/scrollerAdapter.js\");\n/* harmony import */ var _includes_syncAppendHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./includes/syncAppendHandler */ \"./src/includes/syncAppendHandler.js\");\n\n\n\n\nconst syncAppendHandler = new _includes_syncAppendHandler__WEBPACK_IMPORTED_MODULE_3__[\"default\"]();\n_includes_scrollerAdapter__WEBPACK_IMPORTED_MODULE_2__[\"default\"].subscribe('Home-Infinite-Scroll', function () {\n  let documentBottom = jquery__WEBPACK_IMPORTED_MODULE_1___default()(document).height() - jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).height() - 25; //with a 25px buffer height\n\n  let y = _includes_scrollerAdapter__WEBPACK_IMPORTED_MODULE_2__[\"default\"].getY();\n\n  if (y >= documentBottom) {\n    syncAppendHandler.appendContent(jquery__WEBPACK_IMPORTED_MODULE_1___default()('body'), 'google');\n  }\n});\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 

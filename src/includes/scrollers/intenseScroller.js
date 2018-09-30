@@ -13,11 +13,19 @@ const Protected = {};
 
 /**
 *
-* Class some descriptions.
+* Class intenseScroller, is ralatively high computation cost implementation 
+* specializes in providing most frequent updates(60 times/sec) for the application with high animation demands.
+* Therefore, don't use this implementation unless it's absolutely needed.
 *
 **/
 class intenseScroller extends abstractScroller{
 	
+	
+	/**
+	*
+	* Implements the abstract method in abstractScroller
+	*
+	**/
 	onScrollListener(){
 		let loop = () => {
 			this.setY($(window).scrollTop());
@@ -26,9 +34,16 @@ class intenseScroller extends abstractScroller{
 		Protected.loopId = requestAnimationFrame(loop);
 	}
 	
+	
+	/**
+	*
+	* Implements the abstract method in abstractScroller
+	*
+	**/
 	offScrollListener(){
 		cancelAnimationFrame(Protected.loopId);
 	}
+	
 	
 }
 

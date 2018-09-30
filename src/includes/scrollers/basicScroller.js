@@ -13,11 +13,18 @@ const Protected = {};
 
 /**
 *
-* Class some descriptions.
+* Class basicScroller, the most basic scroller implementation
+* it updates the scroll top value every time the window is scrolled or touchmoved 
 *
 **/
 class basicScroller extends abstractScroller{
 	
+	
+	/**
+	*
+	* Implements the abstract method in abstractScroller
+	*
+	**/
 	onScrollListener(){
 		$(window).on('scroll',() => {
 			this.setY($(window).scrollTop());
@@ -27,10 +34,17 @@ class basicScroller extends abstractScroller{
 		}});
 	}
 	
+	
+	/**
+	*
+	* Implements the abstract method in abstractScroller
+	*
+	**/
 	offScrollListener(){
 		$(window).off('scroll');
 		$('body').off('touchmove');
 	}
+	
 	
 }
 
